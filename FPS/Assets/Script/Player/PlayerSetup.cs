@@ -13,8 +13,9 @@ public class PlayerSetup : NetworkBehaviour
     
     private Camera sceneCamera;
     // Start is called before the first frame update
-    void Start()
+    public override void OnNetworkSpawn()
     {
+        base.OnNetworkSpawn();
         //如果当前加入的玩家不是本地玩家，那么将这个玩家的各个组件禁用掉，让它无法读取输入。
         //否则将场景摄像机关闭，知道角色死亡在启用。
         if (!IsLocalPlayer)
@@ -33,12 +34,28 @@ public class PlayerSetup : NetworkBehaviour
             }
         }
         
-        SetPlayerName();
+        RegisterPlayer();
     }
 
-    private void SetPlayerName()
+    public override void OnNetworkDespawn()
     {
-        transform.name = "Player" + GetComponent<NetworkObject>().NetworkObjectId;
+        base.OnNetworkDespawn();
+
+        if (sceneCamera!=null)
+        {
+            sceneCamera.gameObject.SetActive(true);
+        }
+        
+        GameManager.Singleton.UnregisterPlayer(transform.name);
+    }
+
+    private void RegisterPlayer()
+    {
+        string name = "Player " + GetComponent<NetworkObject>().NetworkObjectId.ToString();
+
+        Player player = GetComponent<Player>();
+        
+        GameManager.Singleton.RegisterPlayer(name,player);
     }
     // Update is called once per frame
     private void OnDisable()
@@ -48,4 +65,6 @@ public class PlayerSetup : NetworkBehaviour
             sceneCamera.gameObject.SetActive(true);
         }
     }
+    
+    
 }

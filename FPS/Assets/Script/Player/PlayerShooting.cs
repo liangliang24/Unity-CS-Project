@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class PlayerShooting : NetworkBehaviour
 {
+    private const string PLAYER_TAG = "Player";
+    
     [SerializeField] private PlayerWeapon weapon;
     [SerializeField] private LayerMask mask;
     
@@ -45,15 +47,19 @@ public class PlayerShooting : NetworkBehaviour
                 out hit,
                 weapon.range,mask))
         {
-            ShootServerRpc(hit.collider.name);
+            if (hit.collider.tag == PLAYER_TAG)
+            {
+                ShootServerRpc(hit.collider.name,weapon.damage);
+            }
+            
         }
     }
     /*
      * 如果一个玩家进行了射击，那么就会调用服务器上的ShootServerRpc函数
      */
     [ServerRpc]
-    private void ShootServerRpc(string hitteName)
+    private void ShootServerRpc(string hitteName,int damage)
     {
-        GameManager.UpadateInfo(transform.name+" hit "+hitteName);
+        
     }
 }
