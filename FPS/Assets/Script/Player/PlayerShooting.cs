@@ -54,12 +54,17 @@ public class PlayerShooting : NetworkBehaviour
             
         }
     }
+
+    
+    
+    
     /*
      * 如果一个玩家进行了射击，那么就会调用服务器上的ShootServerRpc函数
      */
     [ServerRpc]
     private void ShootServerRpc(string hitteName,int damage)
     {
-        
+        Player play = GameManager.Singleton.GetPlyaer(name);
+        play.TakeDamage(damage);
     }
 }

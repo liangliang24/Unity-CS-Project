@@ -34,7 +34,9 @@ public class PlayerSetup : NetworkBehaviour
             }
         }
         
+        
         RegisterPlayer();
+        
     }
 
     public override void OnNetworkDespawn()
@@ -56,6 +58,8 @@ public class PlayerSetup : NetworkBehaviour
         Player player = GetComponent<Player>();
         
         GameManager.Singleton.RegisterPlayer(name,player);
+        
+        player.Setup();
     }
     // Update is called once per frame
     private void OnDisable()

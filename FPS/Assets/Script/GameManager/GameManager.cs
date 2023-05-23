@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     {
         player.transform.name = name;
         players.Add(name,player);
+        Singleton.GetPlyaer(name).Setup();
     }
 
     public void UnregisterPlayer(string name)
@@ -31,15 +32,20 @@ public class GameManager : MonoBehaviour
         GUILayout.BeginArea(new Rect(200f,200f,200f,400f));
         GUILayout.BeginVertical();
 
-
+        GUI.color = Color.red;
         foreach (string name in players.Keys)
         {
-            GUI.color = Color.red;
-            GUILayout.Label(name);
+            
+            GUILayout.Label(name + ":" + GetPlyaer(name).GetHealth());
         }
         
         
         GUILayout.EndVertical();
         GUILayout.EndArea();
+    }
+
+    public Player GetPlyaer(string name)
+    {
+        return players[name];
     }
 }
