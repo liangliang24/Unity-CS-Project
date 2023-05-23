@@ -64,7 +64,7 @@ public class PlayerShooting : NetworkBehaviour
     [ServerRpc]
     private void ShootServerRpc(string hitteName,int damage)
     {
-        Player play = GameManager.Singleton.GetPlyaer(name);
+        Player play = GameManager.Singleton.GetPlyaer(hitteName);
         play.TakeDamage(damage);
     }
 }

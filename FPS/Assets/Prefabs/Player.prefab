@@ -431,7 +431,7 @@ ConfigurableJoint:
     serializedVersion: 3
     positionSpring: 20
     positionDamper: 0
-    maximumForce: 5
+    maximumForce: 10
   m_ZDrive:
     serializedVersion: 3
     positionSpring: 0
@@ -498,6 +498,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  componentToDisable:
+  - {fileID: 5488369164523482962}
+  - {fileID: 5488369164523482961}
+  - {fileID: -1845057044350888294}
 --- !u!1 &5488369164762217172
 GameObject:
   m_ObjectHideFlags: 0

@@ -1063,7 +1063,7 @@ ScriptsOnlyBuild:
     className: Outline
   - hash:
       serializedVersion: 2
-      Hash: 6f0d88143c301abdc3147ebdcf740f7e
+      Hash: 89cc6b7d8df07cdf5cdb5644952ada73
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player
