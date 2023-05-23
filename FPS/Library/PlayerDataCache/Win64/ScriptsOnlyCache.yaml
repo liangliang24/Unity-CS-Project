@@ -39,6 +39,7 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.CanvasScaler
     - UnityEngine.UI.GraphicRaycaster
     - UnityEngine.UI.Image
+    - UnityEngine.UI.RawImage
   serializedClasses:
     Assembly-CSharp:
     - PlayerWeapon
@@ -139,6 +140,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 2398}
     - Class: 114
       Script: {instanceID: 2428}
+    - Class: 114
+      Script: {instanceID: 2534}
     - Class: 114
       Script: {instanceID: 2674}
     - Class: 114
