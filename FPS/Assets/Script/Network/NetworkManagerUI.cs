@@ -35,7 +35,7 @@ public class NetworkManagerUI : MonoBehaviour
         }));
         
     }
-
+    
     private void DestroyAllButtons()
     {
         Destroy(hostBtn.gameObject);

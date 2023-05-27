@@ -6,8 +6,8 @@ using UnityEngine;
 public class PlayerShooting : NetworkBehaviour
 {
     private const string PLAYER_TAG = "Player";
-    
-    [SerializeField] private PlayerWeapon weapon;
+    private WeaponManager weaponManager;
+    private PlayerWeapon currentWeapon;
     [SerializeField] private LayerMask mask;
     
     private Camera cam;
@@ -15,17 +15,36 @@ public class PlayerShooting : NetworkBehaviour
     void Start()
     {
         cam = GetComponentInChildren<Camera>();
+        weaponManager = GetComponent<WeaponManager>();
     }
 
     
     // Update is called once per frame
     void Update()
     {
-        //这里判断单次点击，实现单发模式，连发模式需要用到事件
-        if (Input.GetButtonDown("Fire1"))
+
+        currentWeapon = weaponManager.GetCurrentWeapon();
+        if (currentWeapon.shootRate <= 0)
         {
-            Shoot();
+            //这里判断单次点击，实现单发模式，连发模式需要用到事件
+            if (Input.GetButtonDown("Fire1"))
+            {
+                Shoot();
+            }
         }
+        else
+        {
+            if (Input.GetButtonDown("Fire1"))
+            {
+                //通过周期性地调用一个函数实现连发
+                InvokeRepeating("Shoot",0f,1f/currentWeapon.shootRate);
+            }
+            else if(Input.GetButtonUp("Fire1"))
+            {
+                CancelInvoke("Shoot");
+            }
+        }
+        
     }
 
     /*
@@ -37,6 +56,7 @@ public class PlayerShooting : NetworkBehaviour
     
     private void Shoot()
     {
+        // Debug.Log("Shoot!!!");
         RaycastHit hit;
         /*
          * mask是判断求交什么物体，如果这个物体不在所选的layer内，那么不会产生射击。
@@ -45,11 +65,11 @@ public class PlayerShooting : NetworkBehaviour
         if (Physics.Raycast(cam.transform.position,
                 cam.transform.forward,
                 out hit,
-                weapon.range,mask))
+                currentWeapon.range,mask))
         {
             if (hit.collider.tag == PLAYER_TAG)
             {
-                ShootServerRpc(hit.collider.name,weapon.damage);
+                ShootServerRpc(hit.collider.name,currentWeapon.damage);
             }
             
         }
