@@ -22,6 +22,7 @@
 -a="C:\Unity-CS-Project\Unity-CS-Project\FPS\Library\PlayerScriptAssemblies\Unity.Multiplayer.Tools.NetStats.dll"
 -a="C:\Unity-CS-Project\Unity-CS-Project\FPS\Library\PlayerScriptAssemblies\Unity.Multiplayer.Tools.NetStatsMonitor.Implementation.dll"
 -a="C:\Unity-CS-Project\Unity-CS-Project\FPS\Library\PlayerScriptAssemblies\Unity.VisualScripting.State.dll"
+-a="C:\Unity-CS-Project\Unity-CS-Project\FPS\Library\PlayerScriptAssemblies\Unity.Postprocessing.Runtime.dll"
 -a="C:\Unity-CS-Project\Unity-CS-Project\FPS\Library\PackageCache\com.unity.nuget.newtonsoft-json@3.1.0\Runtime\AOT\Newtonsoft.Json.dll"
 -a="C:\Unity-CS-Project\Unity-CS-Project\FPS\Library\PackageCache\com.unity.collections@1.2.4\Unity.Collections.LowLevel.ILSupport\Unity.Collections.LowLevel.ILSupport.dll"
 -a="C:\Unity-CS-Project\Unity-CS-Project\FPS\Library\PackageCache\com.unity.nuget.mono-cecil@1.10.1\Mono.Cecil.Mdb.dll"

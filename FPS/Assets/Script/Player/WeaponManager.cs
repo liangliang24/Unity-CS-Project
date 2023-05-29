@@ -16,6 +16,9 @@ public class WeaponManager : NetworkBehaviour
     [SerializeField] private GameObject weaponHolder;
     //玩家当前的武器
     private PlayerWeapon currentWeapon;
+    
+    //当前攻击的特效
+    private WeaponGraphics currentGraphics;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,7 +27,7 @@ public class WeaponManager : NetworkBehaviour
 
     public void EquipWeapon(PlayerWeapon weapon)
     {
-        currentWeapon = weapon;
+        currentWeapon = weapon;        
 
         //在装备武器的时候先卸掉当前的武器
         while (weaponHolder.transform.childCount>0)
@@ -38,6 +41,14 @@ public class WeaponManager : NetworkBehaviour
             weaponHolder.transform.position,
             weaponHolder.transform.rotation);
         weaponObject.transform.SetParent(weaponHolder.transform);
+
+        currentGraphics = weaponObject.GetComponent<WeaponGraphics>();
+        
+    }
+
+    public WeaponGraphics GetCurrentGraphics()
+    {
+        return currentGraphics;
     }
 
     public PlayerWeapon GetCurrentWeapon()

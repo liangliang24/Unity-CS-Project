@@ -363,7 +363,6 @@ MonoBehaviour:
   - {fileID: 5488369164523482961}
   - {fileID: 5488369164762217175}
   - {fileID: 5488369164762217174}
-  - {fileID: -1845057044350888294}
 --- !u!114 &7166759711152889871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -548,13 +547,13 @@ MonoBehaviour:
     range: 100
     shootRate: 10
     graphics: {fileID: 6381998373549463098, guid: 149b2682e080cb049ace8579533c9b02, type: 3}
-  weaponHolder: {fileID: 4175553866355161451}
   secondaryWeapon:
     name: DesertEagle
     damage: 20
     range: 100
-    shootRate: 10
+    shootRate: 0
     graphics: {fileID: 8779175063235535436, guid: ee4edc42d19d6e84a892d5c255649d7e, type: 3}
+  weaponHolder: {fileID: 4175553866355161451}
 --- !u!1 &5488369164762217172
 GameObject:
   m_ObjectHideFlags: 0

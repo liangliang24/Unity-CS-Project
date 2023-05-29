@@ -11,6 +11,12 @@ public class PlayerShooting : NetworkBehaviour
     [SerializeField] private LayerMask mask;
     
     private Camera cam;
+
+    enum HitEffectMaterial
+    {
+        Metal,
+        Stone
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -22,7 +28,12 @@ public class PlayerShooting : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
+        if (!IsLocalPlayer)
+        {
+            return;
+        }
+        
         currentWeapon = weaponManager.GetCurrentWeapon();
         if (currentWeapon.shootRate <= 0)
         {
@@ -39,7 +50,7 @@ public class PlayerShooting : NetworkBehaviour
                 //通过周期性地调用一个函数实现连发
                 InvokeRepeating("Shoot",0f,1f/currentWeapon.shootRate);
             }
-            else if(Input.GetButtonUp("Fire1"))
+            else if(Input.GetButtonUp("Fire1")||Input.GetKey(KeyCode.Q))
             {
                 CancelInvoke("Shoot");
             }
@@ -48,14 +59,78 @@ public class PlayerShooting : NetworkBehaviour
     }
 
     /*
+     * 由于OnShoot的渲染需要在所有玩家上进行，
+     * 那么PlayerSetup中需要取消禁用非本地PlayerShooting的功能
+     * 然后进行特判即可
+     */
+    private void OnShoot()
+    {
+        weaponManager.GetCurrentGraphics().muzzelFlash.Play();
+    }
+
+    [ServerRpc]
+    private void OnShootServerRpc()
+    {
+        if (!IsHost)
+        {
+            OnShoot();
+        }
+        
+        OnShootClientRpc();
+    }
+
+    [ClientRpc]
+    private void OnShootClientRpc()
+    {
+        OnShoot();
+    }
+
+
+    //击中点特效
+    private void OnHit(Vector3 pos, Vector3 normal,HitEffectMaterial material)
+    {
+        GameObject hitEffectPrefab;
+        if (material == HitEffectMaterial.Metal)
+        {
+            hitEffectPrefab = weaponManager.GetCurrentGraphics().metalHitEffectPrefab;
+        }
+        else
+        {
+            hitEffectPrefab = weaponManager.GetCurrentGraphics().stoneHitEffectPrefab;
+        }
+
+        GameObject hitEffectObject = Instantiate(hitEffectPrefab, pos, Quaternion.LookRotation(normal));
+
+        ParticleSystem particleSystem = hitEffectObject.GetComponent<ParticleSystem>();
+        particleSystem.Emit(1);
+        Destroy(hitEffectObject,1f);
+    }
+
+    [ServerRpc]
+    private void OnHitServerRpc(Vector3 pos, Vector3 normal,HitEffectMaterial material)
+    {
+        if (!IsHost)
+        {
+            OnHit(pos,normal,material);
+        }
+        OnHitClientRpc(pos,normal,material);
+    }
+
+    [ClientRpc]
+    private void OnHitClientRpc(Vector3 pos, Vector3 normal,HitEffectMaterial material)
+    {
+        OnHit(pos,normal,material);
+    }
+    /*
      * 这里射击的逻辑是
      * 从眼睛射出一条射线，如果这条射线击中了谁，那么那个人就是被击中的结果.
      * 这里的射击还需要联网，用到ServerRPC的功能。让客户端去调用服务端的函数。
      * 因为只允许一个人开枪，所以其他人的PlayerShooting组件应该像之前那样在Setup中禁用掉
      */
-    
     private void Shoot()
     {
+        OnShootServerRpc();
+        
         // Debug.Log("Shoot!!!");
         RaycastHit hit;
         /*
@@ -70,6 +145,11 @@ public class PlayerShooting : NetworkBehaviour
             if (hit.collider.tag == PLAYER_TAG)
             {
                 ShootServerRpc(hit.collider.name,currentWeapon.damage);
+                OnHitServerRpc(hit.point,hit.normal,HitEffectMaterial.Metal);
+            }
+            else
+            {
+                OnHitServerRpc(hit.point,hit.normal,HitEffectMaterial.Stone);                
             }
             
         }
