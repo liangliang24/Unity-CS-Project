@@ -66,6 +66,7 @@ public class PlayerShooting : NetworkBehaviour
     private void OnShoot()
     {
         weaponManager.GetCurrentGraphics().muzzelFlash.Play();
+        weaponManager.getCurrentAudio().Play();
     }
 
     [ServerRpc]

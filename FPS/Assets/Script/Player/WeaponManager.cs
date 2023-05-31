@@ -19,6 +19,9 @@ public class WeaponManager : NetworkBehaviour
     
     //当前攻击的特效
     private WeaponGraphics currentGraphics;
+    
+    //音频效果
+    private AudioSource currenAudio;
     // Start is called before the first frame update
     void Start()
     {
@@ -43,9 +46,20 @@ public class WeaponManager : NetworkBehaviour
         weaponObject.transform.SetParent(weaponHolder.transform);
 
         currentGraphics = weaponObject.GetComponent<WeaponGraphics>();
-        
+        currenAudio = weaponObject.GetComponent<AudioSource>();
+        //对于自己开枪的音效对自己来说是2D的，如果是3D的音效会容易使得玩家眩晕
+        if (IsLocalPlayer)
+        {
+            currenAudio.spatialBlend = 0f;
+        }
+
     }
 
+    public AudioSource getCurrentAudio()
+    {
+        return currenAudio;
+    }
+    
     public WeaponGraphics GetCurrentGraphics()
     {
         return currentGraphics;
