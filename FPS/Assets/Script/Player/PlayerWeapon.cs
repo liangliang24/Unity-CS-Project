@@ -12,6 +12,12 @@ public class PlayerWeapon
 
     //射击频率，如果小于等于0为单发
     public float shootRate = 10f;
+    
+    //冷却时间,单发模式下
+    public float shootCoolDownTime = 0.75f;
     //武器的图像
     public GameObject graphics;
+    
+    //后坐力大小
+    public float recoilForce = 2f;
 }

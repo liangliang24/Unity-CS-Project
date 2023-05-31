@@ -329,6 +329,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 5488369164523482960}
   cam: {fileID: 5488369164762217175}
+  weaponManager: {fileID: -3505244994003588885}
   xRotationLimit: 85
 --- !u!114 &8888112428311532915
 MonoBehaviour:
@@ -512,6 +513,7 @@ MonoBehaviour:
   mask:
     serializedVersion: 2
     m_Bits: 4294967295
+  playerController: {fileID: 0}
 --- !u!114 &4522126424649815057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -546,13 +548,17 @@ MonoBehaviour:
     damage: 8
     range: 100
     shootRate: 10
+    shootCoolDownTime: 0.75
     graphics: {fileID: 6381998373549463098, guid: 149b2682e080cb049ace8579533c9b02, type: 3}
+    recoilForce: 2
   secondaryWeapon:
     name: DesertEagle
     damage: 20
     range: 100
     shootRate: 0
+    shootCoolDownTime: 0.75
     graphics: {fileID: 8779175063235535436, guid: ee4edc42d19d6e84a892d5c255649d7e, type: 3}
+    recoilForce: 0
   weaponHolder: {fileID: 4175553866355161451}
 --- !u!1 &5488369164762217172
 GameObject:

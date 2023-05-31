@@ -47,6 +47,7 @@ ScriptsOnlyBuild:
     - PlayerWeapon
     Unity.Netcode.Runtime:
     - Unity.Netcode.NetworkConfig
+    - Unity.Netcode.NetworkPrefab
     - Unity.Netcode.NetworkPrefabs
     - Unity.Netcode.Transports.UTP.UnityTransport/ConnectionAddressData
     - Unity.Netcode.Transports.UTP.UnityTransport/SimulatorParameters
@@ -316,7 +317,7 @@ ScriptsOnlyBuild:
     className: NetworkRigidbody2D
   - hash:
       serializedVersion: 2
-      Hash: 9bcc685c411830ca89b9f2cfaee0f63b
+      Hash: 687204827c62205584539c63ffca043e
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerShooting
@@ -406,7 +407,7 @@ ScriptsOnlyBuild:
     className: Benchmark01_UGUI
   - hash:
       serializedVersion: 2
-      Hash: fc1201c69c8bccb5ec2c095cd1c3d8bb
+      Hash: 5fad4d40c16753a3e4a1fb67e87b7ade
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerController
@@ -1360,7 +1361,7 @@ ScriptsOnlyBuild:
     className: ScrollRect
   - hash:
       serializedVersion: 2
-      Hash: d199b4f23bc0cc628cb195490475b681
+      Hash: 3f0610197c58323c371fef0726f6f037
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: WeaponManager

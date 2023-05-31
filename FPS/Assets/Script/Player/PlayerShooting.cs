@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerShooting : NetworkBehaviour
@@ -8,8 +9,11 @@ public class PlayerShooting : NetworkBehaviour
     private const string PLAYER_TAG = "Player";
     private WeaponManager weaponManager;
     private PlayerWeapon currentWeapon;
+
+    private float shootCoolDownTime = 1f;//距离上次开枪过了多少秒
+    private int autoShootCount = 0;//当前一共连开多少枪
     [SerializeField] private LayerMask mask;
-    
+    [SerializeField] private PlayerController playerController;
     private Camera cam;
 
     enum HitEffectMaterial
@@ -22,6 +26,7 @@ public class PlayerShooting : NetworkBehaviour
     {
         cam = GetComponentInChildren<Camera>();
         weaponManager = GetComponent<WeaponManager>();
+        playerController = GetComponent<PlayerController>();
     }
 
     
@@ -29,18 +34,25 @@ public class PlayerShooting : NetworkBehaviour
     void Update()
     {
         
+        
         if (!IsLocalPlayer)
         {
             return;
         }
-        
         currentWeapon = weaponManager.GetCurrentWeapon();
+        if (currentWeapon.shootRate<=0)
+        {
+            autoShootCount = 0;
+            shootCoolDownTime += Time.deltaTime;
+        }
         if (currentWeapon.shootRate <= 0)
         {
             //这里判断单次点击，实现单发模式，连发模式需要用到事件
-            if (Input.GetButtonDown("Fire1"))
+            if (Input.GetButtonDown("Fire1")&&shootCoolDownTime>=currentWeapon.shootCoolDownTime)
             {
+                autoShootCount = 0;
                 Shoot();
+                shootCoolDownTime = 0f;
             }
         }
         else
@@ -63,27 +75,34 @@ public class PlayerShooting : NetworkBehaviour
      * 那么PlayerSetup中需要取消禁用非本地PlayerShooting的功能
      * 然后进行特判即可
      */
-    private void OnShoot()
+    private void OnShoot(float recoilForce)
     {
         weaponManager.GetCurrentGraphics().muzzelFlash.Play();
         weaponManager.getCurrentAudio().Play();
+
+        //施加后坐力
+        if (IsLocalPlayer)
+        {
+            playerController.AddRecoilForce(recoilForce);
+            // weaponHolder.transform.Rotate(new Vector3(10f,0f,0f));
+        }
     }
 
     [ServerRpc]
-    private void OnShootServerRpc()
+    private void OnShootServerRpc(float recoilForce)
     {
         if (!IsHost)
         {
-            OnShoot();
+            OnShoot(recoilForce);
         }
         
-        OnShootClientRpc();
+        OnShootClientRpc(recoilForce);
     }
 
     [ClientRpc]
-    private void OnShootClientRpc()
+    private void OnShootClientRpc(float recoilForce)
     {
-        OnShoot();
+        OnShoot(recoilForce);
     }
 
 
@@ -130,7 +149,13 @@ public class PlayerShooting : NetworkBehaviour
      */
     private void Shoot()
     {
-        OnShootServerRpc();
+        autoShootCount++;
+        float recoilFoce = currentWeapon.recoilForce;
+        if (autoShootCount<=3)
+        {
+            recoilFoce /= 5;
+        }
+        OnShootServerRpc(recoilFoce);
         
         // Debug.Log("Shoot!!!");
         RaycastHit hit;

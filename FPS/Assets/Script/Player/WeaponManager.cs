@@ -28,6 +28,7 @@ public class WeaponManager : NetworkBehaviour
         EquipWeapon(primaryWeapon);
     }
 
+    private GameObject weaponObject;
     public void EquipWeapon(PlayerWeapon weapon)
     {
         currentWeapon = weapon;        
@@ -39,7 +40,7 @@ public class WeaponManager : NetworkBehaviour
         }
         
         // Instantiate可以实例化一个对象
-        GameObject weaponObject = Instantiate(
+        weaponObject = Instantiate(
             currentWeapon.graphics,
             weaponHolder.transform.position,
             weaponHolder.transform.rotation);
@@ -55,6 +56,10 @@ public class WeaponManager : NetworkBehaviour
 
     }
 
+    public void Recoil(float recoilForce)
+    {
+        weaponHolder.transform.GetChild(0).gameObject.transform.Rotate(new Vector3(0f, 0f, recoilForce*5));
+    }
     public AudioSource getCurrentAudio()
     {
         return currenAudio;
@@ -108,4 +113,6 @@ public class WeaponManager : NetworkBehaviour
             }
         }
     }
+    
+        
 }

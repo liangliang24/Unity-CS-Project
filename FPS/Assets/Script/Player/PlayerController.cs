@@ -6,7 +6,8 @@ using System.Numerics;
  using UnityEngine;
 using UnityEngine.PlayerLoop;
 using FixedUpdate = Unity.VisualScripting.FixedUpdate;
-using Vector3 = UnityEngine.Vector3;
+ using Random = System.Random;
+ using Vector3 = UnityEngine.Vector3;
 
 public class PlayerController : MonoBehaviour
 {
@@ -21,12 +22,19 @@ public class PlayerController : MonoBehaviour
     private Vector3 yRotation = Vector3.zero;//旋转角色
     private Vector3 xRotation = Vector3.zero;//旋转视角
     private Vector3 thrusterForce = Vector3.zero;//向上的推力
+    [SerializeField] private WeaponManager weaponManager;
+    //后坐力
+    private float recoilForce = 2f;
     //这两个参数限制相机的旋转
     [SerializeField] 
     private float xRotationLimit = 85f;
     
     private float xRotationTotal = 0f;
-    
+
+    public void AddRecoilForce(float newRecoilForce)
+    {
+        recoilForce += newRecoilForce;
+    }
     //获取移动和旋转
     public void Move(Vector3 _velocity)
     {
@@ -46,6 +54,11 @@ public class PlayerController : MonoBehaviour
     //朝着velocity方向进行移动
     private void PerformMovement()
     {
+        if (recoilForce < 1)
+        {
+            recoilForce = 0f;
+        }
+        
         if (velocity != Vector3.zero)
         {
             rb.MovePosition(rb.position+velocity*Time.fixedDeltaTime);//模拟物体下一帧的位置，x+vt
@@ -60,17 +73,21 @@ public class PlayerController : MonoBehaviour
     //进行旋转
     private void PerformRotation()
     {
-        if (yRotation != Vector3.zero)
+        if (yRotation != Vector3.zero||recoilForce>=0)
         {
-            rb.transform.Rotate(yRotation);
+            rb.transform.Rotate(yRotation+rb.transform.up*new Random().Next(-(int)recoilForce,(int)recoilForce));
         }
 
-        if (xRotation != Vector3.zero)
+        if (xRotation != Vector3.zero||recoilForce>=0)
         {
-            xRotationTotal += xRotation.x;
+            xRotationTotal += xRotation.x-recoilForce;
             xRotationTotal = Mathf.Clamp(xRotationTotal, -xRotationLimit,xRotationLimit);
-            cam.transform.localEulerAngles = new Vector3(xRotationTotal,0f, 0f); 
+            cam.transform.localEulerAngles = new Vector3(xRotationTotal,0f, 0f);
         }
+        
+        
+        //实现先快后慢的效果
+        recoilForce *= 0.5f;
     }
     
     
@@ -84,5 +101,7 @@ public class PlayerController : MonoBehaviour
     {
         PerformMovement();
         PerformRotation();
+        
+        // weaponManager.Recoil();
     }
 }
