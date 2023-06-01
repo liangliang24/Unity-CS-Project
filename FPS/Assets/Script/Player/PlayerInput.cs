@@ -15,13 +15,15 @@ public class PlayerInput : MonoBehaviour
 
     [SerializeField] 
     private float thrusterForce = 20f;//飞行的推力
-
-    [SerializeField] 
-    private ConfigurableJoint joint;
+    
+    //初始离地面的长度，如果碰撞检测高于这个高度那么说明人物是离地的
+    private float distToGround = 0f;
     // Start is called before the first frame update
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;//在游戏开始的时候让鼠标消失
+        distToGround = GetComponent<Collider>().bounds.extents.y;
+        print(distToGround);
     }
 
     // Update is called once per frame
@@ -39,30 +41,22 @@ public class PlayerInput : MonoBehaviour
         Vector3 yRotation = new Vector3(0f, xMouse, 0f)*lookSensitivity;
         Vector3 xRotation = new Vector3(-yMouse, 0f, 0f)*lookSensitivity;
         
-        //获取关于飞行的输入
-        Vector3 force = Vector3.zero;
         //如果接收到空格的输入那么取消弹力，如果没有那么恢复弹力
         if (Input.GetButton("Jump"))
         {
-            force = Vector3.up * thrusterForce;
-            var jointYDrive = joint.yDrive;
-            jointYDrive.positionSpring = 0f;
-            jointYDrive.positionDamper = 0f;
-            jointYDrive.maximumForce = 0f;
+            if (Physics.Raycast(transform.position,-Vector3.up,distToGround+0.1f))
+            {
+                Vector3 force = Vector3.up * thrusterForce;
+                controller.Thrust(force);
+            }
+            
         }
-        else
-        {
-            force = Vector3.zero;
-            var jointYDrive = joint.yDrive;
-            jointYDrive.positionSpring = 20f;
-            jointYDrive.positionDamper = 0f;
-            jointYDrive.maximumForce = 40f;
-        }
+        
             
             
         controller.Move(velocity*speed);
         controller.Rotate(yRotation,xRotation);
-        controller.Thrust(force);
+        
         
     }
 }

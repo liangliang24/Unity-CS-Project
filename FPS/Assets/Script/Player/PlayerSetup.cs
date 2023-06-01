@@ -24,9 +24,12 @@ public class PlayerSetup : NetworkBehaviour
             {
                 componentsToDisable[i].enabled = false;
             }
+            SetLayerMaskForAllChildren(transform,LayerMask.NameToLayer("Remote Player"));
+            
         }
         else
         {
+            SetLayerMaskForAllChildren(transform,LayerMask.NameToLayer("Player"));
             sceneCamera = Camera.main;//将场景摄像机设置为MainCamera
             if (sceneCamera != null)
             {
@@ -39,6 +42,14 @@ public class PlayerSetup : NetworkBehaviour
         
     }
 
+    private void SetLayerMaskForAllChildren(Transform transform, LayerMask layerMask)
+    {
+        transform.gameObject.layer = layerMask;
+        for (int i = 0; i < transform.childCount; ++i)
+        {
+            SetLayerMaskForAllChildren(transform.GetChild(i),layerMask);
+        }
+    }
     public override void OnNetworkDespawn()
     {
         base.OnNetworkDespawn();

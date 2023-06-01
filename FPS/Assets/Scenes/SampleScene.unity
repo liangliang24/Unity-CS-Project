@@ -1110,6 +1110,22 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8522313345932058932, guid: 56df8bbe62627624abf02dccc9e1cb9f, type: 3}
+      propertyPath: InitialModule.startSizeY.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8522313345932058932, guid: 56df8bbe62627624abf02dccc9e1cb9f, type: 3}
+      propertyPath: InitialModule.startSizeZ.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8522313345932058932, guid: 56df8bbe62627624abf02dccc9e1cb9f, type: 3}
+      propertyPath: InitialModule.startRotationX.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8522313345932058932, guid: 56df8bbe62627624abf02dccc9e1cb9f, type: 3}
+      propertyPath: InitialModule.startRotationY.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56df8bbe62627624abf02dccc9e1cb9f, type: 3}
 --- !u!1 &1641970445

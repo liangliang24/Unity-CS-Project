@@ -3,13 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
  using Unity.Mathematics;
+ using Unity.Netcode;
  using UnityEngine;
 using UnityEngine.PlayerLoop;
 using FixedUpdate = Unity.VisualScripting.FixedUpdate;
  using Random = System.Random;
  using Vector3 = UnityEngine.Vector3;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : NetworkBehaviour
 {
     //获取玩家的物理属性
     [SerializeField] 
@@ -30,6 +31,18 @@ public class PlayerController : MonoBehaviour
     private float xRotationLimit = 85f;
     
     private float xRotationTotal = 0f;
+
+    //记录上一帧的位置
+    private Vector3 lastFramePosition = Vector3.zero;
+    //精度误差，
+    private float eps = 0.01f;
+    //动画
+    private Animator animator;
+    private void Start()
+    {
+        lastFramePosition = transform.position;
+        animator = GetComponentInChildren<Animator>();
+    }
 
     public void AddRecoilForce(float newRecoilForce)
     {
@@ -67,6 +80,7 @@ public class PlayerController : MonoBehaviour
         if (thrusterForce != Vector3.zero)
         {
             rb.AddForce(thrusterForce);//作用Time.fixedDeltaTime秒
+            thrusterForce = Vector3.zero;
         }
     }
     
@@ -91,17 +105,80 @@ public class PlayerController : MonoBehaviour
     }
     
     
+    
+    
+    /*
+     * 动画中的参数direction代表了8个方向，每次根据变化的方向来判断出角色走的方向
+     * 然后可以播放相应的动画
+     */
+    public void PerformAnimation()
+    {
+        Vector3 deltaPosition = transform.position - lastFramePosition;
+        lastFramePosition = transform.position;
+
+        float forward = Vector3.Dot(deltaPosition, transform.forward);
+        float right = Vector3.Dot(deltaPosition, transform.right);
+
+        int direction = 0;
+
+        if (forward > eps)
+        {
+            direction = 1;//向前
+        }
+        else if(forward<-eps)
+        {
+            if (right > eps)
+            {
+                direction = 4;//右后
+            }
+            else if(right < -eps)
+            {
+                direction = 6; //左后
+            }
+            else
+            {
+                direction = 5;//后
+            }
+        }
+        else
+        {
+            if (right > eps)
+            {
+                direction = 3;
+            }
+            else if(right < -eps)
+            {
+                direction = 7;
+            }
+        }
+        
+        animator.SetInteger("direction",direction);
+    }
     //物体的模拟通过Update，但是如果物体的模拟是刚体用的是FixedUpdate
     /*FixedUpdate每秒默认执行50次（可以自行设置,Edit-Project Settings-Time中可以设置），这个是均匀的执行过程，每秒钟严格均匀地执行。
         Update每秒执行次数也是定值（两者并不一样），但是每次执行的时间并不一定均匀。
         这会导致一个问题，如果模拟的是一个曲线的时候，因为时间并不均匀，导致整个模拟和真实模拟的轨迹并不一致
         */
-            
     private void FixedUpdate()
     {
-        PerformMovement();
-        PerformRotation();
+        //只有本地玩家才能操作自己的位置，但是所有人都可以播放对应的动画
+        //实现动画的联机
+        if (IsLocalPlayer)
+        {
+            PerformMovement();
+            PerformRotation();
+        }
+        
         
         // weaponManager.Recoil();
+    }
+
+    /*
+     * 由于网路同步的频率不一定和FixUpdate一样严格
+     * 那么FixUpdate的调用可能比网路同步的频率多，导致最后出现动画没有达到预期的效果
+     */
+    private void Update()
+    {
+        PerformAnimation();
     }
 }
