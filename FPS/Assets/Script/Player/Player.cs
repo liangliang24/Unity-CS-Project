@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -20,6 +21,16 @@ public class Player : NetworkBehaviour
     private bool[] componentsEnabled;
 
     private bool colliderEnabled;
+
+    private Animator animator;
+
+    private Rigidbody rb;
+
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
+
     /*
      * 自动帮助我们进行同步所有端口的值
      * 只能在服务端修改，值永远和服务器端的值相同
@@ -38,6 +49,7 @@ public class Player : NetworkBehaviour
         Collider col = GetComponent<Collider>();
         colliderEnabled = col.enabled;
         SetDefault();
+        animator = GetComponentInChildren<Animator>();
     }
 
     private void SetDefault()
@@ -82,9 +94,11 @@ public class Player : NetworkBehaviour
     //重生
     private IEnumerator Respawn()
     {
-        yield return new WaitForSeconds(3f);//停止3秒之后进行重生的逻辑
         
+        yield return new WaitForSeconds(3f);//停止3秒之后进行重生的逻辑
+        rb.useGravity = true;
         SetDefault();
+        animator.SetInteger("direction",0);
         if (IsLocalPlayer)
         {
             transform.position = new Vector3(0f, 3f, 0f);
@@ -107,6 +121,7 @@ public class Player : NetworkBehaviour
     }
     private void Die()
     {
+        rb.useGravity = false;
         for (int i = 0; i < componentToDisable.Length; ++i)
         {
             componentToDisable[i].enabled = false;
@@ -114,7 +129,7 @@ public class Player : NetworkBehaviour
 
         Collider col = GetComponent<Collider>();
         col.enabled = false;
-
+        animator.SetInteger("direction",-1);
         //开启一个新的线程执行重生
         StartCoroutine(Respawn());
     }

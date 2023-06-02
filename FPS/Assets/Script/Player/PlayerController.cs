@@ -6,7 +6,8 @@ using System.Numerics;
  using Unity.Netcode;
  using UnityEngine;
 using UnityEngine.PlayerLoop;
-using FixedUpdate = Unity.VisualScripting.FixedUpdate;
+ using UnityEngine.SocialPlatforms;
+ using FixedUpdate = Unity.VisualScripting.FixedUpdate;
  using Random = System.Random;
  using Vector3 = UnityEngine.Vector3;
 
@@ -38,10 +39,13 @@ public class PlayerController : NetworkBehaviour
     private float eps = 0.01f;
     //动画
     private Animator animator;
+
+    private float distToGround;
     private void Start()
     {
         lastFramePosition = transform.position;
         animator = GetComponentInChildren<Animator>();
+        distToGround = GetComponent<Collider>().bounds.extents.y;
     }
 
     public void AddRecoilForce(float newRecoilForce)
@@ -113,6 +117,16 @@ public class PlayerController : NetworkBehaviour
      */
     public void PerformAnimation()
     {
+        if (animator.GetInteger("direction") == -1)
+        {
+            return;
+        }
+
+        if (!Physics.Raycast(transform.position,-Vector3.up,distToGround+0.1f))
+        {
+            animator.SetInteger("direction",9);
+            return;
+        }
         Vector3 deltaPosition = transform.position - lastFramePosition;
         lastFramePosition = transform.position;
 
@@ -169,6 +183,14 @@ public class PlayerController : NetworkBehaviour
             PerformRotation();
         }
         
+        /*
+         * 因为本地采用fixedupdate，远程采用update，
+         * 如果统一在update更新动画，两者不同步有可能会导致滑步的出现
+         */
+        if (IsLocalPlayer)
+        {
+            PerformAnimation();
+        }
         
         // weaponManager.Recoil();
     }
@@ -179,6 +201,10 @@ public class PlayerController : NetworkBehaviour
      */
     private void Update()
     {
-        PerformAnimation();
+        if (!IsLocalPlayer)
+        {
+            PerformAnimation();
+        }
+        
     }
 }

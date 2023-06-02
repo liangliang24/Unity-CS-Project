@@ -26,7 +26,9 @@ public class WeaponManager : NetworkBehaviour
     void Start()
     {
         EquipWeapon(primaryWeapon);
+        
     }
+    
 
     private GameObject weaponObject;
     public void EquipWeapon(PlayerWeapon weapon)

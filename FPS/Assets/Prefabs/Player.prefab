@@ -318,7 +318,7 @@ MonoBehaviour:
   mask:
     serializedVersion: 2
     m_Bits: 4294967295
-  playerController: {fileID: 0}
+  playerController: {fileID: 5488369164523482961}
 --- !u!114 &4522126424649815057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -354,7 +354,7 @@ MonoBehaviour:
     range: 100
     shootRate: 10
     shootCoolDownTime: 0.75
-    graphics: {fileID: 6381998373549463098, guid: 149b2682e080cb049ace8579533c9b02, type: 3}
+    graphics: {fileID: 8851592158786712221, guid: 228c3538b301e314db3c4bc5a4d823b6, type: 3}
     recoilForce: 2
   secondaryWeapon:
     name: DesertEagle
@@ -362,9 +362,9 @@ MonoBehaviour:
     range: 100
     shootRate: 0
     shootCoolDownTime: 0.75
-    graphics: {fileID: 8779175063235535436, guid: ee4edc42d19d6e84a892d5c255649d7e, type: 3}
+    graphics: {fileID: 2153215145462108031, guid: faf4a9466ff7a1a48bf39fe874fbe821, type: 3}
     recoilForce: 0
-  weaponHolder: {fileID: 4175553866355161451}
+  weaponHolder: {fileID: 4394438307464208309}
 --- !u!136 &1539299645034959498
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -406,7 +406,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5488369164762217172}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.01, z: 0}
+  m_LocalPosition: {x: 0.11, y: 0.71, z: 0.52}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -438,7 +438,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.1
   far clip plane: 1000
   field of view: 60
   orthographic: 0
@@ -446,7 +446,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 183
+    m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -828,10 +828,43 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: a2e3148a9370b5b479143bca655f57a0, type: 2}
+    - target: {fileID: 3571403545614689971, guid: 3b5ab3dd72d54ff46ab6be8c31770ac8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.7132701
+      objectReference: {fileID: 0}
+    - target: {fileID: 3571403545614689971, guid: 3b5ab3dd72d54ff46ab6be8c31770ac8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.015039059
+      objectReference: {fileID: 0}
+    - target: {fileID: 3571403545614689971, guid: 3b5ab3dd72d54ff46ab6be8c31770ac8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.040407795
+      objectReference: {fileID: 0}
+    - target: {fileID: 3571403545614689971, guid: 3b5ab3dd72d54ff46ab6be8c31770ac8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.6995619
+      objectReference: {fileID: 0}
+    - target: {fileID: 3571403545614689971, guid: 3b5ab3dd72d54ff46ab6be8c31770ac8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -4.473
+      objectReference: {fileID: 0}
+    - target: {fileID: 3571403545614689971, guid: 3b5ab3dd72d54ff46ab6be8c31770ac8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -2.104
+      objectReference: {fileID: 0}
+    - target: {fileID: 3571403545614689971, guid: 3b5ab3dd72d54ff46ab6be8c31770ac8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 271.194
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3b5ab3dd72d54ff46ab6be8c31770ac8, type: 3}
 --- !u!4 &4348805731678473014 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 498876, guid: 3b5ab3dd72d54ff46ab6be8c31770ac8, type: 3}
+  m_PrefabInstance: {fileID: 4348805731678902154}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4394438307464208309 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 46761809664968767, guid: 3b5ab3dd72d54ff46ab6be8c31770ac8, type: 3}
   m_PrefabInstance: {fileID: 4348805731678902154}
   m_PrefabAsset: {fileID: 0}

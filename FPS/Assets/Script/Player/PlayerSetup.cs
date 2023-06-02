@@ -12,6 +12,7 @@ public class PlayerSetup : NetworkBehaviour
     private Behaviour[] componentsToDisable;//需要禁用的组件的列表
     
     private Camera sceneCamera;
+    
     // Start is called before the first frame update
     public override void OnNetworkSpawn()
     {
@@ -36,8 +37,7 @@ public class PlayerSetup : NetworkBehaviour
                 sceneCamera.gameObject.SetActive(false);
             }
         }
-        
-        
+
         RegisterPlayer();
         
     }
