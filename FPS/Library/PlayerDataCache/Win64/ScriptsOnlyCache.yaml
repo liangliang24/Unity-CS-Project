@@ -17,7 +17,7 @@ ScriptsOnlyBuild:
     - Unity.Netcode.NetworkManager
     - Unity.Netcode.NetworkObject
     - Unity.Netcode.NetworkPrefabsList
-    - Unity.Netcode.Transports.UTP.UnityTransport
+    - Unity.Netcode.Transports.UNET.UNetTransport
     Unity.PlasticSCM.Editor.dll:
     - Unity.PlasticSCM.Editor.PlasticWindow
     Unity.Rider.Editor.dll:
@@ -55,10 +55,7 @@ ScriptsOnlyBuild:
     - PlayerWeapon
     Unity.Netcode.Runtime:
     - Unity.Netcode.NetworkConfig
-    - Unity.Netcode.NetworkPrefab
     - Unity.Netcode.NetworkPrefabs
-    - Unity.Netcode.Transports.UTP.UnityTransport/ConnectionAddressData
-    - Unity.Netcode.Transports.UTP.UnityTransport/SimulatorParameters
     Unity.TextMeshPro:
     - TMPro.FaceInfo_Legacy
     - TMPro.FontAssetCreationSettings
@@ -165,8 +162,6 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 2486}
     - Class: 114
-      Script: {instanceID: 2518}
-    - Class: 114
       Script: {instanceID: 2626}
     - Class: 114
       Script: {instanceID: 2776}
@@ -208,6 +203,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 8502}
     - Class: 114
       Script: {instanceID: 8642}
+    - Class: 114
+      Script: {instanceID: 8756}
     - Class: 114
       Script: {instanceID: 9340}
     - Class: 115
@@ -399,7 +396,7 @@ ScriptsOnlyBuild:
     className: PostProcessLayer
   - hash:
       serializedVersion: 2
-      Hash: 032046e9ca00c5a174587690e600d86c
+      Hash: a754f97519bf85b4ab3a37bc2711d10f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: NetworkManagerUI
